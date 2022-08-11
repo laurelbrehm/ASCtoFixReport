@@ -1,0 +1,22 @@
+## getting fix reports without dataviewer
+## Laurel Brehm, summer 2022
+
+## step 1: convert files using edfConverter or edf2asc
+
+## step 2: using terminal, navigate to path where files live 
+cd Desktop/missingEDFs/ 
+ 
+## step 3: run this in terminal to extract relevant lines for each file
+for f in *.asc  				  	## will operate on all asc files in folder
+do	
+	fm="${f%.*}"
+	grep 'RECORD\|IMGLOAD\|EFIX' "$f" > "$fm.out.txt"   ## extract lines containing RECORD (start trial), IMGLOAD (screen swap) and EFIX (end of fixation) and save them as .txt file
+	sed -i -e 's/^/'"${fm}"' /' "$fm.out.txt"    	## add the file name to use as recording session label later
+	sed -i '' 's/EFIX/x NA x/g' "$fm.out.txt"	 	## these and next lines are cleanup to play nice in R
+	sed -i '' 's/FILL/NA NA NA NA NA NA /g' "$fm.out.txt"
+	sed -i '' 's/IMGLOAD/NA/g' "$fm.out.txt"
+done
+rm *txt-e						## remove extra files that get created along the way
+
+## step 3: run R script asc2fix.R
+(Note that this is somewhat optimized for study where there is a synch message sent mid-trial. Can simplify otherwise)
