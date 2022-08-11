@@ -6,7 +6,7 @@
 ## step 2: using terminal, navigate to path where files live 
 cd Desktop/missingEDFs/ 
  
-## step 3: run this in terminal to extract relevant lines for each file
+## step 3: run this in terminal to extract relevant lines for each file. note: this works for mac... should be able to create similar for pc but using different text edit commands.
 for f in *.asc  				  	## will operate on all asc files in folder
 do	
 	fm="${f%.*}"
